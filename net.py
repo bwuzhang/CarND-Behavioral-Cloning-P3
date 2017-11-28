@@ -28,7 +28,10 @@ for line in lines:
         elif i == 2:
             measurement -= 0.25
         if np.absolute(measurement) < 0.1:
-            if np.random.uniform() < 0.5:
+            if np.random.uniform() < 0.7:
+                continue
+        if np.absolute(measurement) < 0.2:
+            if np.random.uniform() < 0.2:
                 continue
         images.append(image_w_lines)
         measurements.append(measurement)
@@ -109,6 +112,6 @@ model.add(Dense(1))
 
 adam = Adam(lr = 0.0001)
 model.compile(loss='mse', optimizer=adam)
-model.fit(X_train, y_train, validation_split=0.2, shuffle=True, epochs=10)
+model.fit(X_train, y_train, validation_split=0.2, shuffle=True, epochs=15)
 
 model.save('model.h5')
