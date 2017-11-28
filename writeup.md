@@ -12,8 +12,10 @@ The goals / steps of this project are the following:
 
 [image1]: ./examples/2.jpg "Original"
 [image2]: ./examples/o_2.jpg "Lanes"
-[image3]: ./examples/b_2.jpg "Brightness"
-[image4]: ./examples/f_2.jpg "Flipped"
+[image3]: ./examples/f_2.jpg "Brightness"
+[image4]: ./examples/b_2.jpg "Flipped"
+[image5]: ./examples/s_2.jpg "Shadow"
+[image6]: ./examples/sh_2.jpg "Shift"
 
 ## Rubric Points
 ### Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/432/view) individually and describe how I addressed each point in my implementation.  
@@ -45,11 +47,24 @@ The model.py file contains the code for training and saving the convolution neur
 
 My model consists of a convolution neural network with 3x3 and 5x5 filter sizes and depths between 24 and 64 (net.py lines 67-71)
 
-The model includes RELU layers to introduce nonlinearity for every convolution layer, and the data is normalized in the model using a Keras lambda layer (code line 64).
+The model includes ELU layers to introduce nonlinearity for every convolution layer, and the data is normalized in the model using a Keras lambda layer (code line 64).
 
+| Layer         		|     Description	        					|
+|:---------------------:|:---------------------------------------------:|
+| Input         		| 65x320x3 YUV image   							|
+| Convolution 5x5     	| 2x2 stride, 24 depth, valid padding, ELU activation 	|
+| Convolution 5x5     	| 2x2 stride, 36 depth, valid padding, ELU activation 	|
+| Convolution 5x5     	| 2x2 stride, 48 depth, valid padding, ELU activation 	|
+| Convolution 3x3     	| 1x1 stride, 64 depth, same padding, ELU activation 	|
+| Convolution 3x3     	| 1x1 stride, 64 depth, valid padding, ELU activation 	|
+| Flatten					|												|
+| Fully connected		| 100 depth, ELU activation       									|
+| Fully connected		| 50 depth, ELU activation       									|
+| Fully connected		| 10 depth, ELU activation       									|
+| Fully connected		| 1 depth, ELU activation       									|
 #### 2. Attempts to reduce overfitting in the model
 
-The model contains dropout layers in order to reduce overfitting.
+The model contains weights normalization (l2) for all convolution and dense layers.
 
 The model was trained on 80% and validated on 20% of one data sets to ensure that the model was not overfitting (code line 82). The model was tested by running it through the simulator and ensuring that the vehicle could stay on the track.
 
@@ -67,9 +82,13 @@ I only used the data set provided by Udacity since I found they were large enoug
 1. The first step to preprocess the data was to find lane in it using the pipeline I wrote in P1. Black lanes were drawn on all images.
 ![alt text][image2]
 2. The next step was to horizontally flip all images and their corresponding steering measurements. This helped the algorithm learn turning right instead of turning left all the time.
-![alt text][image4]
-3. The final steps was applying random brightness change in the V channel of the images converted to HSV format.
 ![alt text][image3]
+3. Next step was applying random brightness change in the V channel of the images converted to HSV format.
+![alt text][image4]
+4. Random shadow was added on to the image.
+![alt text][image5]
+5. Random shift was applied at the end.
+![alt text][image6]
 
 After all the steps, I tripled the number of training images I had.
 
