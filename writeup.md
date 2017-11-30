@@ -1,7 +1,7 @@
 **Behavioral Cloning Project**
 
 The goals / steps of this project are the following:
-* Use the simulator to collect data of good driving behavior
+* Use the simulator to collect data of good driving behaviour
 * Build, a convolution neural network in Keras that predicts steering angles from images
 * Train and validate the model with a training and validation set
 * Test that the model successfully drives around track one without leaving the road
@@ -72,6 +72,7 @@ The model was trained on 80% and validated on 20% of one data sets to ensure tha
 
 The model used an adam optimizer, so the learning rate was set to 0.0001.
 
+The network was trained for 15 epochs to reach the minimum validation loss.
 #### 4. Appropriate training data
 
 Training data was chosen to keep the vehicle driving on the road. I used a combination of center lane driving, recovering from the left and right sides of the road. I applied 0.25 offset for right and left images, which equals to about 14 degrees.
@@ -81,15 +82,19 @@ For details about how I created the training data, see the next section.
 I only used the data set provided by Udacity since I found they were large enough for me to get a reasonable result.
 1. The first step to preprocess the data was to find lane in it using the pipeline I wrote in P1. Black lanes were drawn on all images.
 ![alt text][image2]
+
 2. The next step was to horizontally flip all images and their corresponding steering measurements. This helped the algorithm learn turning right instead of turning left all the time.
 ![alt text][image3]
+
 3. Next step was applying random brightness change in the V channel of the images converted to HSV format.
 ![alt text][image4]
-4. Random shadow was added on to the image.
+
+4. A random part of the images are applied a 0.6-0.8 scale on the V channel to add the shadow effect.
 ![alt text][image5]
-5. Random shift was applied at the end.
+
+5. Random shift of (height/8) was applied on the vertical axis of the image using the perspective transformation function from OpenCV.
 ![alt text][image6]
 
-After all the steps, I tripled the number of training images I had.
+After all the steps, the number of images had been expanded to over 70000.
 
 The images were then cropped by 75 and 20 pixels on top and bottom respectfully in order to discard unnecessary information and reduce model size.
